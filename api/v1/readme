@@ -1,0 +1,7 @@
+.htaccess config:
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+Rewriterule ^(.*)/(.*)/(.*)/(.*)/(.*)$ /api/v1/index.php?module=$3&function=$4&id=$5 [L,NC]

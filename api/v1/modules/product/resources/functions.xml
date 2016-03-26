@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+
+  <function>
+    <name>id</name>
+    <uri>id</uri>
+  </function>
+
+  <function>
+    <name>category</name>
+    <uri>category</uri>
+  </function>
+
+  <function>
+    <name>text</name>
+    <uri>text</uri>
+  </function>
+
+</functions>
