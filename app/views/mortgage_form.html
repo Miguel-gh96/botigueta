@@ -1,0 +1,190 @@
+   <div class="container">
+      <form name="mortgage_form" novalidate method="POST" class="form-horizontal" id="formulario_products"  ng-submit="json_hipoteca()" >
+	    <h2 class="bg-primary" style="padding:15px 15px 15px 55px;">Mortgage Calculator</h2>
+	    <div class="row">
+	    <div class="col-sm-6">
+	<fieldset>
+		   <legend class="text-info">Economic data</legend>
+		   <div class="form-group required">
+				<label class="control-label col-sm-6">Monthly income:</label>
+				<div class="col-sm-6">
+					<input required ng-model="hipoteca.dades_economiques.ingresos_mensuales"  id="ingresos_mensuales" name="ingresos_mensuales" placeholder="Ingresos mensuales" type="number" min="0" class="form-control">
+          <span class="text-danger" ng-show="mortgage_form.ingresos_mensuales.$error.required && (mortgage_form.ingresos_mensuales.$dirty || mortgage_form.ingresos_mensuales.$touched)">El camp &eacute;s obligatori</span>
+				</div>
+
+			</div>
+
+			<div class="form-group required">
+				<label class="control-label col-sm-6">CAPITAL:</label>
+				<div class="col-sm-6">
+					<input required ng-model="hipoteca.dades_economiques.capital" id="capital" name="capital" placeholder="capital" type="number" class="form-control" >
+          <span class="text-danger" ng-show="mortgage_form.capital.$error.required && (mortgage_form.capital.$dirty || mortgage_form.capital.$touched)">El camp &eacute;s obligatori</span>
+
+				</div>
+			</div>
+
+			<div class="form-group required">
+				<label class="control-label col-sm-6">INTEREST RATE </label>
+				<div class="col-sm-6">
+					<select ng-model="hipoteca.dades_economiques.tipo_interes" name="interest_rate_type" id="interest_rate_type" class="form-control" ng-change="resetValues()">
+						<option value="variable">variable</option>
+						<option value="fixed">fixed</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{required:hipoteca.dades_economiques.tipo_interes==='variable'}">
+				<label class="control-label col-sm-6">EURIBOR:</label>
+				<div class="col-sm-6">
+
+					<input ng-required="hipoteca.dades_economiques.tipo_interes==='variable'" ng-model="hipoteca.dades_economiques.euribor" ng-disabled="hipoteca.dades_economiques.tipo_interes==='fixed' || hipoteca.dades_economiques.tipo_interes===''" id="euribor" type="number" name="euribor" placeholder="euribor" type="text" class="form-control" >
+          <span class="text-danger" ng-show="mortgage_form.euribor.$error.required && (mortgage_form.euribor.$dirty || mortgage_form.euribor.$touched)">El camp &eacute;s obligatori</span>
+
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{required:hipoteca.dades_economiques.tipo_interes==='variable'}">
+				<label class="control-label col-sm-6">DIFFERENTIAL:</label>
+				<div class="col-sm-6">
+					<input ng-required="hipoteca.dades_economiques.tipo_interes==='variable'" ng-model="hipoteca.dades_economiques.diferencial" ng-disabled="hipoteca.dades_economiques.tipo_interes==='fixed' || hipoteca.dades_economiques.tipo_interes===''" id="differential" type="number" name="differential" placeholder="differential" type="text" class="form-control">
+          <span class="text-danger" ng-show="mortgage_form.differential.$error.required && (mortgage_form.differential.$dirty || mortgage_form.differential.$touched)">El camp &eacute;s obligatori</span>
+
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{required:hipoteca.dades_economiques.tipo_interes==='fixed'}">
+				<label class="control-label col-sm-6">Fixed interest rate</label>
+				<div class="col-sm-6">
+					<input ng-required="hipoteca.dades_economiques.tipo_interes==='fixed'" ng-model="hipoteca.dades_economiques.interes_fijo" ng-disabled="hipoteca.dades_economiques.tipo_interes==='variable' || hipoteca.dades_economiques.tipo_interes===''" id="fixed_interest" name="fixed_interest" placeholder="Fixed interest rate" type="number" class="form-control" >
+          <span class="text-danger" ng-show="mortgage_form.fixed_interest.$error.required && (mortgage_form.fixed_interest.$dirty || mortgage_form.fixed_interest.$touched)">El camp &eacute;s obligatori</span>
+
+				</div>
+			</div>
+
+			<div class="form-group required">
+				<label class="control-label col-sm-6">Period</label>
+				<div class="col-sm-6">
+					<input ng-model="hipoteca.dades_economiques.plazo_anyos" id="period" required type="number" name="period" placeholder="How many years?" class="form-control">
+          <span class="text-danger" ng-show="mortgage_form.period.$error.required && (mortgage_form.period.$dirty || mortgage_form.period.$touched)">El camp &eacute;s obligatori</span>
+
+				</div>
+			</div>
+
+	</fieldset>
+	</div>
+	 <div class="col-sm-6">
+	<fieldset>
+
+		  <legend class="text-info">Personal data</legend>
+			   <div class="form-group required">
+			  <label class="control-label col-sm-6">NIF:</label>
+	  <div class="col-sm-6">
+				<input ng-model="hipoteca.nif" id="nif" name="nif" required  placeholder="With char letter at the end, please." type="text" class="form-control"   ng-pattern="/(^[X-Z]\d{7}[A-Z]$)|(^\d{8}[A-Z]$)/" value= >
+        <span class="text-danger" ng-show="mortgage_form.nif.$error.required && (mortgage_form.nif.$dirty || mortgage_form.nif.$touched)">El camp &eacute;s obligatori</span>
+        <span class="text-danger" ng-show="mortgage_form.nif.$error.pattern">NIF not valid</span>
+
+			  </div>
+			</div>
+			<div class="form-group required">
+				<label class="control-label col-sm-6">NAME:</label>
+		    <div class="col-sm-6">
+					     <input ng-model="hipoteca.nombre" id="nombre" name="name" required  placeholder="Name" type="text" class="form-control" value=>
+               <span class="text-danger" ng-show="mortgage_form.name.$error.required && (mortgage_form.name.$dirty || mortgage_form.name.$touched)">El camp &eacute;s obligatori</span>
+
+		    </div>
+			</div>
+			<div class="form-group required">
+				<label class="control-label col-sm-6">First Surname:</label>
+				<div class="col-sm-6">
+				<input ng-model="hipoteca.ape1" id="surname1" name="surname1" required  placeholder="First Surname" type="text" class="form-control" >
+        <span class="text-danger" ng-show="mortgage_form.surname1.$error.required && (mortgage_form.surname1.$dirty || mortgage_form.surname1.$touched)">El camp &eacute;s obligatori</span>
+
+		</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-6">Second Surname:</label>
+				<div class="col-sm-6">
+			<input ng-model="hipoteca.ape2" id="surname2" name="surname2"  placeholder="Second Surname" type="text" class="form-control">
+		</div>
+		</div>
+	<div class="form-group">
+				<label class="control-label col-sm-6">AGE:</label>
+				<div class="col-sm-6">
+				<input ng-model="hipoteca.edad" id="age" name="age"  placeholder="Don't lie" type="number" min="18" class="form-control" >
+        <span class="text-danger" ng-show="!mortgage_form.age.$valid && mortgage_form.age.$dirty ">Minimum 18 years old</span>
+
+		</div>
+
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-6">MOBILE:</label>
+				<div class="col-sm-6">
+				<input ng-model="hipoteca.telefono" id="mobile" name="mobile" placeholder="Mobile number" type="text" class="form-control">
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="control-label col-sm-6">EMAIL</label>
+				<div class="col-sm-6">
+				<input ng-model="hipoteca.email" id="email" name="email" required type="email" placeholder="email" class="form-control"  >
+        <span class="text-danger" ng-show="mortgage_form.email.$error.required && (mortgage_form.email.$dirty || mortgage_form.email.$touched)">El camp &eacute;s obligatori</span>
+        <span class="text-danger" ng-show="mortgage_form.email.$error.email">Email not valid</span>
+
+				</div>
+			</div>
+
+	</fieldset>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-sm-4">
+	<fieldset>
+
+		 <legend class="text-info">Associated products</legend>
+		 <div class="checkbox">
+			<label class="control-label col-sm-8">Home insurance </label>
+			<div class="col-sm-4">
+				<input ng-model="hipoteca.dades_economiques.producto_segurocasa" name="homeInsurance" id="homeInsurance"  type="checkbox" class="form-control">
+
+			</div>
+		 </div>
+		 <div class="checkbox">
+			<label class="control-label col-sm-8">Paysheet </label>
+			<div class="col-sm-4">
+				<input ng-model="hipoteca.dades_economiques.producto_nomina" name="paysheet" id="paysheet" type="checkbox" class="form-control">
+			</div>
+		</div>
+		<div class="checkbox">
+			<label class="control-label col-sm-8">Life insurance</label>
+			<div class="col-sm-4">
+				<input ng-model="hipoteca.dades_economiques.producto_segurovida" name="lifeInsurance" id="lifeInsurance" type="checkbox" class="form-control">
+			</div>
+	   </div>
+	</fieldset>
+	</div>
+        	<div class="col-sm-4">
+        	<fieldset>
+
+        	       <legend class="text-info">RESULTS</legend>
+        		<div class="form-group">
+        			<label class="control-label col-sm-6">Monthly quote</label>
+        			<div class="col-sm-6">
+        				<input ng-model="hipoteca.cuota_mensual" id="monthlyQuote" name="monthlyQuote" readonly  placeholder="Monthly quote" type="text" class="form-control" >
+        			</div>
+        		</div>
+        		<div class="form-group">
+        			<label class="control-label col-sm-6">Interest rate applied</label>
+        			<div class="col-sm-6">
+        				<input ng-model="hipoteca.interes_aplicado" id="interestApplied" name="interestApplied" readonly  placeholder="Interest Applied" type="text" class="form-control">
+        			</div>
+        		</div>
+	        	<input name="send" type="submit" value="SUBMIT MORTGAGE INFO" />
+    	    </div>
+          <div class="col-sm-4">
+              <h3>Interest paid: {{hipoteca.total_interesos}}</h3>
+          </div>
+    	   </div>
+
+		</form>
+
+	</div>

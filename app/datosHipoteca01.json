@@ -1,0 +1,23 @@
+{
+    "idHipoteca":"01",
+    "nif":"12345678Z",
+    "nombre":"Pere",
+    "ape1":"Crespo",
+    "ape2":"Molina",
+    "edad":41,
+    "telefono":"656340567",
+    "email":"pedcremo@gmail.com",
+
+    "dades_economiques": {
+	"ingresos_mensuales":1200,
+	"capital":120000,
+	"tipo_interes":"fixed",
+	"euribor":"",
+	"diferencial":"",
+	"interes_fijo":2.97,
+	"plazo_anyos":25,
+	"producto_segurocasa":false,
+	"producto_nomina":false,
+	"producto_segurovida":false
+    }
+}

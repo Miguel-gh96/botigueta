@@ -1,0 +1,22 @@
+{
+    "idHipoteca":"03",
+    "nif":"33345678T",
+    "nombre":"Jesica",
+    "ape1":"Lange",
+    "ape2":"Nuli",
+    "edad":31,
+    "telefono":"756543522",
+    "email":"jessi@outlook.com",
+    "dades_economiques": {
+	"ingresos_mensuales":5000,
+	"capital":290000,
+	"tipo_interes":"variable",
+	"euribor":0.4,
+	"diferencial":1.25,
+	"interes_fijo":"",
+	"plazo_anyos":25,
+	"producto_segurocasa":false,
+	"producto_nomina":false,
+	"producto_segurovida":true
+    }
+}

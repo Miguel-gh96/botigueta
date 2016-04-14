@@ -1,0 +1,22 @@
+{
+    "idHipoteca":"02",
+    "nif":"22345678S",
+    "nombre":"Oscar",
+    "ape1":"Garcia",
+    "ape2":"Pina",
+    "edad":21,
+    "telefono":"656340001",
+    "email":"oscar@gmail.com",
+    "dades_economiques": {
+	"ingresos_mensuales":1200,
+	"capital":62000,
+	"tipo_interes":"fixed",
+	"euribor":"",
+	"diferencial":"",
+	"interes_fijo":2.07,
+	"plazo_anyos":20,
+	"producto_segurocasa":true,
+	"producto_nomina":false,
+	"producto_segurovida":false
+    }
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+<head>
+  <title>Mortgage Calculator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js">
+    </script>
+    <script type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js">
+    </script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="libs/angular-route.min.js"></script>-->
+
+  <script src="bin/app.js"></script>
+
+
+  <style>
+    .form-group.required .control-label:after {
+       content:"*";
+       color:red;
+  }
+  </style>
+</head>
+    <body ng-controller="MainController">
+      <!--<div ng-view></div>-->
+      <div class="content-wrapper" ng-view></div>
+      <ng-include src="views/footer.html"></ng-include>
+    </body>
+</html>

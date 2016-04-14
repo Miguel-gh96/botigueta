@@ -1,0 +1,22 @@
+
+<a href="#/">Tornar a home</a>
+<h1>Llistat hipoteques</h1>
+    Filtre: <input type="text" ng-model="filtro" ><hr>
+  <table class="table table-striped">
+  <thead>
+      <th>IdHipoteca</th>
+      <th>DNI</th>
+      <th>Nom i cognoms</th>
+      <th>Capital</th>
+      <th>Tipus d'interès</th>
+      <th>Borrar</th>
+  </thead>
+  <tbody ng-repeat=" hipo in hipotecas | filter:filtro">
+      <td><a href="#/hipoteca/mostrar/{{hipo.idHipoteca}}">{{hipo.idHipoteca}}</a></td>
+      <td>{{hipo.nif}}</td>
+      <td>{{hipo.nombre}} {{hipo.ape2}} {{hipo.ape1}}</td>
+      <td>{{hipo.dades_economiques.capital}}</td>
+      <td>{{hipo.dades_economiques.tipo_interes}}</td>
+      <td ng-click="delete($index)"><p class="glyphicon glyphicon-remove"></p></td>
+  </tbody>
+</table>
