@@ -1,0 +1,26 @@
+{
+  "name": "hipoteca",
+  "version": "0.0.1",
+  "description": "Pruebas crud",
+  "main": "gulpfile.js",
+  "bin": {
+    "hipoteca": "app.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Miguel-gh96/hipoteca.git"
+  },
+  "author": "Miguel",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/Miguel-gh96/hipoteca/issues"
+  },
+  "dependencies": {
+    "gulp": "~3.9.1",
+    "gulp-browserify": "~0.5.1",
+    "underscore": "~1.8.3"
+  }
+}

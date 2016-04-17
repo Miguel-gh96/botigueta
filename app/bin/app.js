@@ -1550,53 +1550,39 @@
 
 },{}],2:[function(require,module,exports){
 exports.MainController = function($scope) {
-  console.log("HOla");
   $scope.urlPie = "views/peu.html";
 }
 
-exports.HipotecaListController = function($scope, $http) {
-  console.log("holasadsadasdsa");
+exports.HipotecaListController = function($scope, $http, apiconnect) {
   $scope.hipotecas = [];
 
   //GET data
-  $http({
-    method: 'GET',
-    url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=get_all'
-  }).success(function(data, status, headers, config) {
-    console.log(data);
-    $scope.hipotecas = data;
-  }).error(function(data, status, headers, config) {
-    if (status === 400) {
-      console.log("fail");
-      return data;
-    } else {
-      console.log("asdsada123");
-      throw new Error("Fallo obtener los datos:" + status + "\n" + data);
+  apiconnect.get('crud', 'get_all', '').then(function(results){
+    console.log(results);
+    if(results.success){
+      $scope.hipotecas = results.data;
+    }else{
+      console.log('error');
+      console.log(results);
     }
   });
 
-  $scope.delete = function(index) {
-
-    $http({
-      method: 'GET',
-      url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=delete&id='+$scope.hipotecas.idHipoteca
-    }).success(function(data, status, headers, config) {
-      console.log(data);
-      $scope.hipotecas.splice(index,1);
-    }).error(function(data, status, headers, config) {
-      if (status === 400) {
-        console.log("fail");
-        return data;
-      } else {
-        console.log("asdsada123");
-        throw new Error("Fallo obtener los datos:" + status + "\n" + data);
+  $scope.delete = function(index, idHipo) {
+    apiconnect.delete('crud','delete',idHipo).then(function(results){
+      if(results.success){
+        console.log('success');
+        console.log(results);
+        $scope.hipotecas.splice(index,1);
+      }else{
+        console.log('error');
+        console.log(results);
       }
-    })
+    });
   }
 
 }
 
-exports.MostrarHip_controller = function($scope, $http, $route) {
+exports.MostrarHip_controller = function($scope, $http, $route, apiconnect, $sce) {
   $scope.hipo = {};
   $scope.hipoteca = {
     nif: "",
@@ -1625,13 +1611,20 @@ exports.MostrarHip_controller = function($scope, $http, $route) {
     total_interesos: undefined
   }
 
+  $scope.error = {
+    nif: "",
+    nombre: "",
+    ape1: "",
+    ape2: "",
+    edad: "",
+    telefono: "",
+    email: "",
+  };
 
-  $http({
-    method: 'GET',
-    url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=get_all&id='+$route.current.params.idPersona,
-  }).success(function(data, status, headers, config) {
-      console.log(data[0]);
-      $scope.hipo = data[0];
+  apiconnect.get('crud', 'get', $route.current.params.idPersona).then(function(results){
+    if(results.success){
+      console.log(results);
+      $scope.hipo = results.data;
       $scope.hipoteca = {
         nif: $scope.hipo.nif,
         nombre: $scope.hipo.nombre,
@@ -1656,16 +1649,11 @@ exports.MostrarHip_controller = function($scope, $http, $route) {
         interes_aplicado: undefined,
         total_interesos: undefined
       }
-  }).error(function(data, status, headers, config) {
-    if (status === 400) {
-      return data;
-    } else {
-      throw new Error("Fallo obtener los datos:" + status + "\n" + data);
+    }else{
+      console.log('error');
+      console.log(results);
     }
   });
-
-
-
 
   $scope.calcularHipoteca = function() {
       var interes_aplicado_ = parseFloat($scope.hipoteca.dades_economiques.euribor) + parseFloat($scope.hipoteca.dades_economiques.diferencial);
@@ -1702,21 +1690,22 @@ exports.MostrarHip_controller = function($scope, $http, $route) {
       return false;
     } else {
       //$scope.json = angular.toJson($scope.hipoteca);
-      $http({
-        method: 'POST',
-        url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=set',
-        data: JSON.stringify({
-                  data: $scope.hipoteca
-              }),
-      }).success(function(data, status, headers, config) {
-          console.log(data);
-      }).error(function(data, status, headers, config) {
-        if (status === 400) {
-          return data;
-        } else {
-          throw new Error("Fallo obtener los datos:" + status + "\n" + data);
+      apiconnect.put('crud', 'set', JSON.stringify({data: $scope.hipoteca})).then(function(results){
+        if(results.success){
+          console.log(results);
+        }else{
+          for(name in $scope.error){
+            console.log(name);
+            if(results.error[name]){
+              console.log(results.error[name]);
+              $scope.error[name] = $sce.trustAsHtml(results.error[name]);
+            }
+          }
+          console.log(results);
+          console.log('error');
         }
       });
+
       return true;
     }
   }
@@ -1737,8 +1726,7 @@ exports.MostrarHip_controller = function($scope, $http, $route) {
 
 }
 
-exports.HipotecaControler = function($scope, $http) {
-  console.log("hola2");
+exports.HipotecaControler = function($scope, $http, apiconnect,$sce) {
     $scope.hipoteca = {
       nif: "48608794L",
       nombre: "miguel",
@@ -1764,8 +1752,17 @@ exports.HipotecaControler = function($scope, $http) {
       cuota_mensual: undefined,
       interes_aplicado: undefined,
       total_interesos: undefined
-    }
+    };
 
+    $scope.error = {
+      nif: "",
+      nombre: "",
+      ape1: "",
+      ape2: "",
+      edad: "",
+      telefono: "",
+      email: "",
+    };
 
   $scope.calcularHipoteca = function() {
       var interes_aplicado_ = parseFloat($scope.hipoteca.dades_economiques.euribor) + parseFloat($scope.hipoteca.dades_economiques.diferencial);
@@ -1795,38 +1792,33 @@ exports.HipotecaControler = function($scope, $http) {
 
   $scope.json_hipoteca = function() {
 
+    //clean errors scope
+    for(name in $scope.error){
+       $scope.error[name] = "";
+    }
+
     if (!$scope.mortgage_form.$valid) {
       angular.forEach($scope.mortgage_form.$error.required, function(field) {
         field.$setDirty();
       });
       return false;
     } else {
-
-            $http({
-                      method: 'POST',
-                      url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=add',
-                      data: JSON.stringify({
-                                data: $scope.hipoteca
-                            })
-                  }).success(function(data, status, headers, config) {
-            	       console.log(data)
-                  }).error(function(data, status, headers, config) {
-                     console.log(data);
-                  });
-
-      /*$http({
-        method: 'POST',
-        url: 'http://localhost/hipoteca/api/v1/index.php?module=crud&function=add',
-        data: $scope.json,
-      }).success(function(data, status, headers, config) {
-          console.log(data);
-      }).error(function(data, status, headers, config) {
-        if (status === 400) {
-          return data;
-        } else {
-          throw new Error("Fallo obtener los datos:" + status + "\n" + data);
+      apiconnect.post('crud', 'add', JSON.stringify({data: $scope.hipoteca})).then(function(results){
+        if(results.success){
+          console.log(results);
+        }else{
+          for(name in $scope.error){
+            console.log(name);
+            if(results.error[name]){
+              console.log(results.error[name]);
+              $scope.error[name] = $sce.trustAsHtml(results.error[name]);
+            }
+          }
+          console.log(results);
+          console.log('error');
         }
-      });*/
+      });
+
       return true;
     }
   }
@@ -1878,7 +1870,8 @@ exports.hipoteca = function() {
 
 },{}],4:[function(require,module,exports){
 var controllers = require('./controllers');
-var directives = require('./directives')
+var directives = require('./directives');
+var services = require('./services');
 var _ = require('underscore');
 
 var components = angular.module("app.components", ['ng']);
@@ -1889,8 +1882,11 @@ _.each(controllers, function(controller, name){
 
 _.each(directives, function(directive, name){
   components.directive(name, directive);
-})
+});
 
+_.each(services, function(factory, name){
+  components.factory(name,factory);
+});
 
 var app_ = angular.module("app", ['app.components','ngRoute']);
 
@@ -1917,4 +1913,92 @@ app_.config(function($routeProvider) {
 
 })
 
-},{"./controllers":2,"./directives":3,"underscore":1}]},{},[4])
+},{"./controllers":2,"./directives":3,"./services":5,"underscore":1}],5:[function(require,module,exports){
+exports.apiconnect = function ($http, $q) {
+
+  var serviceBase = 'http://localhost/hipoteca/api/v1/index.php?module=';
+  var obj = {};
+
+  //get data
+  obj.get = function (module, functi, data) {
+
+    var defered = $q.defer();
+    var promise = defered.promise;
+
+    $http({
+      method:'GET',
+      url: serviceBase + module +'&function=' + functi + '&id=' + data,
+    }).success(function (data, status, headers, config){
+      defered.resolve(data);
+    }).error(function(data,status, headers, config){
+      defered.reject(data);
+    });
+
+    return promise;
+
+  }
+
+  //delete data
+  obj.delete = function (module, functi, data) {
+
+    var defered = $q.defer();
+    var promise = defered.promise;
+
+    $http({
+      method:'DELETE',
+      url: serviceBase + module +'&function=' + functi + '&id=' + data,
+    }).success(function (data, status, headers, config){
+      defered.resolve(data);
+    }).error(function(data,status, headers, config){
+      defered.reject(data);
+    });
+
+    return promise;
+
+  }
+
+  //new data
+  obj.post = function (module, functi, data) {
+
+    var defered = $q.defer();
+    var promise = defered.promise;
+
+    $http({
+      method:'POST',
+      url: serviceBase + module +'&function=' + functi,
+      data: data
+    }).success(function (data, status, headers, config){
+      defered.resolve(data);
+    }).error(function(data,status, headers, config){
+      defered.reject(data);
+    });
+
+    return promise;
+
+  }
+
+  //update data
+  obj.put = function (module, functi, data) {
+
+    var defered = $q.defer();
+    var promise = defered.promise;
+
+    $http({
+      method:'PUT',
+      url: serviceBase + module +'&function=' + functi,
+      data: data
+    }).success(function (data, status, headers, config){
+      defered.resolve(data);
+    }).error(function(data,status, headers, config){
+      defered.reject(data);
+    });
+
+    return promise;
+
+  }
+
+  return obj
+
+};
+
+},{}]},{},[4])
